@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arjun118/Super-market-automation-system.git"
+    "url": "git+https://github.com/bk167465/supermarket-management-system.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/arjun118/Super-market-automation-system/issues"
+    "url": "https://github.com/bk167465/supermarket-management-system/issues"
   },
-  "homepage": "https://github.com/arjun118/Super-market-automation-system#readme",
+  "homepage": "https://github.com/bk167465/supermarket-management-system#readme",
   "dependencies": {
     "bootstrap-icons": "^1.10.3",
     "connect-flash": "^0.1.1",
