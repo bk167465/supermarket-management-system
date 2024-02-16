@@ -4,12 +4,6 @@ const Schema= mongoose.Schema
 const Item= require('./item')
 
 const billSchema= new Schema({
-    // customer_name:{
-    //     type:String,
-    // },
-    // contact:{
-    //     type:String,
-    // },
     items:[
        { 
             item_code:{type:Number},

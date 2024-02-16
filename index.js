@@ -15,10 +15,7 @@ const Item = require("./models/item");
 const Sales = require("./models/sales");
 const { isLoggedIn } = require("./middleware");
 
-mongoose.connect("mongodb://127.0.0.1:27017/supermarket", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect("mongodb://127.0.0.1:27017/supermarket");
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
@@ -30,7 +27,6 @@ const app = express();
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
 app.use(express.urlencoded({ extended: true }));
 
 const sessionConfig = {
@@ -43,6 +39,7 @@ const sessionConfig = {
     maxAge: 1000 * 60 * 60 * 24 * 2,
   },
 };
+
 app.use(session(sessionConfig));
 app.use(flash());
 
@@ -116,7 +113,6 @@ app.post("/stat_ind",async(req,res)=>{
   
 })
 
-
 //common
 
 app.get('/profile',isLoggedIn,async(req,res)=>{
@@ -130,19 +126,6 @@ app.get('/about',isLoggedIn,async(req,res)=>{
 app.get('/welcome',isLoggedIn,async(req,res)=>{
     res.render('welcome')
 })
-
-//extras
-
-// app.get('/makeuser',async(req,res)=>{
-//     const user = new User({name:'staff',user_type:'Staff',username:'staff'});
-//     const newuser = await User.register(user,'staff');
-//     res.send(newuser);
-// })
-// app.get('/additem',async(req,res)=>{
-//     // const item = new Item({item_name:"vegetable",item_code:await Item.countDocuments()+1,quantity:"40",unit_price:"50",description:"grocery"})
-//     // await item.save();
-//     res.send(res.locals.currentUser.user_type)
-// })
 
 
 //manager
@@ -174,8 +157,6 @@ app.get('/stat',isLoggedIn,async (req,res)=>{
     ]);
     const allsales=await Sales.find({})
     const allDetails = await Item.find({});
-    // console.log(allsales
-    // const main=true;
     res.render('sales_stat',{ allsales, allDetails,allsalesforpie, filter });
   } catch (err) {
     console.error(err);
@@ -227,7 +208,6 @@ app.post('/bill',isLoggedIn,async(req,res)=>{
         req.flash('error', 'Only Sales Clerk is authorized for this action');
         res.redirect('/welcome');
     }
-    // return res.send(req.body)
     var bill= req.body
     console.log(bill)
     const date=new Date()
@@ -254,10 +234,8 @@ app.post('/bill',isLoggedIn,async(req,res)=>{
         await sell.save()
         console.log(q)
     }
-    // console.log(bill_items)
     
     const new_bill = new Bill({
-        // customer_name:bill.customer_name,contact:bill.contact,
         items:bill_items,
         total_cost:bill.sub_total,
         date:bill.date
@@ -266,18 +244,13 @@ app.post('/bill',isLoggedIn,async(req,res)=>{
 
   bill.id = await Bill.countDocuments();
   bill.bill_items = bill_items;
-
-  // bill=JSON.stringify(bill)
-
   res.render("print_bill", { bill });
-
-  // res.send(req.body)
 });
 
 
 app.get('/print',isLoggedIn,(req,res)=>{
   if(res.locals.currentUser.user_type!='Clerk'){
-    req.flash('error', 'Only Sales Clerk is authorized for this action');
+    req.flash('error', 'Only Sales ClerTOOLSk is authorized for this action');
     res.redirect('/welcome');
   }
   res.render('print_bill')
@@ -304,7 +277,6 @@ app.post('/add',isLoggedIn,async(req,res)=>{
 })
 
 app.post('/updateItems',isLoggedIn,async(req,res)=>{
-    //return res.send(req.body)
     newitem=req.body;
     const x = await Item.findOneAndUpdate({item_code: parseInt(newitem.i1)},{unit_price:newitem.i3 , quantity:newitem.i4})
     const allDetails = await Item.find({});

@@ -1,1 +1,1 @@
-# Super-market-automation-system
+# Supermarket-management-system
